@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -14,23 +15,36 @@
                         </div>
                     @endif
 
+                    @if(count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form action="{{route('addNewCar')}}" method="POST">
                         {{ csrf_field() }}
-                        <select class="form-control" name="brand_id">
+                        <select class="form-control" name="brand">
                             <option value="">Brand</option>
                             @foreach($brands as $brand)
-                                <option value="{{$brand->id}}">{{$brand->brand}}</option>
+                                <option 
+                                {{old('brand') == $brand->id ? "selected" : ""}}
+                                value="{{$brand->id}}">{{$brand->brand}}</option>
                             @endforeach
                         </select>
                         <br>
-                        <select class="form-control" name="color_id">
+                        <select class="form-control" name="color">
                             <option value="">Color</option>
                             @foreach($colors as $color)
-                                <option value="{{$color->id}}">{{$color->color}}</option>
+                                <option 
+                                {{old('color') == $color->id ? "selected" : ""}}
+                                value="{{$color->id}}">{{$color->color}}</option>
                             @endforeach
                         </select>
                         <br>
-                        <input type="text" class="form-control" placeholder="Number" name="number">
+                        <input type="text" class="form-control" placeholder="Number" id="number" value="{{ old('number') }}" name="number">
                         <br>
                         <button type="submit" class="btn btn-outline-primary">Submit</button>
                     </form>

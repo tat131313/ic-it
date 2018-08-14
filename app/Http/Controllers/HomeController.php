@@ -39,10 +39,18 @@ class HomeController extends Controller
 
     public function addNewCar(Request $request) 
     {
+        $rules = [
+            'brand' => 'required',
+            'color' => 'required',
+            'number' => 'required|unique:registered_cars|min:4|max:10',
+        ];
+        
+        $this->validate($request, $rules);
+
         $car = new RegisteredCar;
         $car->user_id = Auth::user()->id;
-        $car->brand_id = $request->brand_id;
-        $car->color_id = $request->color_id;
+        $car->brand_id = $request->brand;
+        $car->color_id = $request->color;
         $car->number = $request->number;
         $car->save();
         return back()->withInput(); 
