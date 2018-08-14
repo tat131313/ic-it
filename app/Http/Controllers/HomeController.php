@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Brand;
+use App\Color;
+use App\RegisteredCar;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +27,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $brands = Brand::all();
+        $colors = Color::all();
+        $myCars = RegisteredCar::leftJoin('brands', 'registered_cars.brand_id', '=', 'brands.id')
+                                ->leftJoin('colors', 'registered_cars.color_id', '=', 'colors.id')
+                                ->select('brand', 'color', 'number')
+                                ->where('user_id', '=', Auth::user()->id)
+                                ->get();
+        return view('home', ['brands' => $brands, 'colors' => $colors, 'myCars' => $myCars]);
+    }
+
+    public function addNewCar(Request $request) 
+    {
+        $car = new RegisteredCar;
+        $car->user_id = Auth::user()->id;
+        $car->brand_id = $request->brand_id;
+        $car->color_id = $request->color_id;
+        $car->number = $request->number;
+        $car->save();
+        return back()->withInput(); 
     }
 }

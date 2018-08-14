@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
-
+                <div class="card-header">Add new car</div>
+                
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -14,10 +14,52 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <form action="{{route('addNewCar')}}" method="POST">
+                        {{ csrf_field() }}
+                        <select class="form-control" name="brand_id">
+                            <option value="">Brand</option>
+                            @foreach($brands as $brand)
+                                <option value="{{$brand->id}}">{{$brand->brand}}</option>
+                            @endforeach
+                        </select>
+                        <br>
+                        <select class="form-control" name="color_id">
+                            <option value="">Color</option>
+                            @foreach($colors as $color)
+                                <option value="{{$color->id}}">{{$color->color}}</option>
+                            @endforeach
+                        </select>
+                        <br>
+                        <input type="text" class="form-control" placeholder="Number" name="number">
+                        <br>
+                        <button type="submit" class="btn btn-outline-primary">Submit</button>
+                    </form>
+                </div>
+
+                <div class="card-header">My cars</div>
+                <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($myCars as $myCar)
+                        <tr>
+                            <td>{{$myCar->brand}}</td>
+                            <td>{{$myCar->color}}</td>
+                            <td>{{$myCar->number}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>                  
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection
