@@ -20,3 +20,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/addNewCar', 'HomeController@addNewCar')->name('addNewCar');
+
+Route::post('/deleteCar', 'HomeController@deleteCar')->name('deleteCar');
+
+
+
+
